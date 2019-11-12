@@ -1,13 +1,13 @@
-import { LitElement, html, css, property, customElement } from "lit-element";
-import * as bt from "./bluetooth";
+import { LitElement, html, css, property, customElement } from 'lit-element'
+import * as bt from './bluetooth'
 
-@customElement("my-app")
+@customElement('my-app')
 class MyApp extends LitElement {
 	@property({ type: Object })
-	error = "";
+	error = ''
 
 	@property()
-	connected = false;
+	connected = false
 
 	render() {
 		return html`
@@ -15,26 +15,26 @@ class MyApp extends LitElement {
 				? html`
 						<div class="error">${this.error}</div>
 				  `
-				: ""}
+				: ''}
 			${this.connected
 				? `Lets do awesome things!`
 				: html`
 						<button @click=${this.connect}>connect</button>
 				  `}
-		`;
+		`
 	}
 
 	async connect() {
 		try {
-			this.clearError();
-			await bt.connect();
-			this.connected = true;
+			this.clearError()
+			await bt.connect()
+			this.connected = true
 		} catch (e) {
-			this.error = e;
+			this.error = e
 		}
 	}
 
 	clearError() {
-		this.error = "";
+		this.error = ''
 	}
 }
