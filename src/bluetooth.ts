@@ -1,6 +1,4 @@
 const serviceUUID = '42230200-2342-2342-2342-234223422342'
-const bottomLeftLedUUID = '42230211-2342-2342-2342-234223422342'
-const vibraUUID = '4223020f-2342-2342-2342-234223422342'
 
 const rgbLed = (service: BluetoothRemoteGATTService, uuid: string) => ({
 	read: async () => {
@@ -23,8 +21,8 @@ const rgbLed = (service: BluetoothRemoteGATTService, uuid: string) => ({
 	},
 })
 
-const vibra = (service: BluetoothRemoteGATTService, uuid: string) => ({
-	write: async (time = 1000) => {
+const vibrationMotor = (service: BluetoothRemoteGATTService, uuid: string) => ({
+	write: async (time = 100) => {
 		const data = new Uint16Array(1)
 		data[0] = time
 
@@ -32,6 +30,13 @@ const vibra = (service: BluetoothRemoteGATTService, uuid: string) => ({
 		return await c.writeValue(data)
 	},
 })
+
+export class Card10 {
+	constructor(private service: BluetoothRemoteGATTService) {}
+
+	vibrate = vibrationMotor(this.service, '4223020f-2342-2342-2342-234223422342').write
+	bottomLeftLed = rgbLed(this.service, '42230211-2342-2342-2342-234223422342')
+}
 
 export async function connect() {
 	if (!navigator.bluetooth)
@@ -55,18 +60,11 @@ export async function connect() {
 
 	console.log('Getting Service...')
 	const service = await server.getPrimaryService(serviceUUID)
-	console.log('Available Characteristics', await service.getCharacteristics())
 
-	console.log('Getting Characteristic...')
-	const bottomLeftLed = rgbLed(service, bottomLeftLedUUID)
-	console.log('read', await bottomLeftLed.read())
-	bottomLeftLed.write({ red: 255 })
-	console.log('read', await bottomLeftLed.read())
-	bottomLeftLed.write({ green: 255 })
-	console.log('read', await bottomLeftLed.read())
-	bottomLeftLed.write({ blue: 255 })
-	console.log('Characteristic connected')
+	const card10 = new Card10(service)
 
-	await vibra(service, vibraUUID).write()
-	console.log('Characteristic written')
+	await card10.vibrate()
+	console.log('BT initialized')
+
+	return card10
 }

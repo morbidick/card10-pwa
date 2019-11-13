@@ -1,5 +1,6 @@
 import { LitElement, html, css, property, customElement } from 'lit-element'
-import * as bt from './bluetooth'
+import {connect, Card10} from './bluetooth'
+import { InputEvent, hexToRgb } from './utils';
 
 @customElement('my-app')
 class MyApp extends LitElement {
@@ -7,7 +8,7 @@ class MyApp extends LitElement {
 	error = ''
 
 	@property()
-	connected = false
+	card: Card10
 
 	render() {
 		return html`
@@ -16,8 +17,15 @@ class MyApp extends LitElement {
 						<div class="error">${this.error}</div>
 				  `
 				: ''}
-			${this.connected
-				? `Lets do awesome things!`
+			${this.card
+				? html`
+						Lets do awesome things!
+						<input type="color" @input=${(e: InputEvent) => {
+							if (e.target) {
+								this.card.bottomLeftLed.write(hexToRgb(e.target.value))
+							}
+						}} />
+				  `
 				: html`
 						<button @click=${this.connect}>connect</button>
 				  `}
@@ -27,8 +35,7 @@ class MyApp extends LitElement {
 	async connect() {
 		try {
 			this.clearError()
-			await bt.connect()
-			this.connected = true
+			this.card = await connect()
 		} catch (e) {
 			this.error = e
 		}
