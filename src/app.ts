@@ -1,13 +1,12 @@
 import { LitElement, html, css, property, customElement } from 'lit-element'
-import {connect, Card10} from './bluetooth'
-import { InputEvent, hexToRgb } from './utils';
+import { connect, Card10, supported } from './bluetooth'
+import { InputEvent, hexToRgb } from './utils'
 
-@customElement('my-app')
 class MyApp extends LitElement {
-	@property({ type: Object })
+	@property({ type: String })
 	error = ''
 
-	@property()
+	@property({ attribute: false })
 	card: Card10
 
 	render() {
@@ -19,12 +18,35 @@ class MyApp extends LitElement {
 				: ''}
 			${this.card
 				? html`
-						Lets do awesome things!
-						<input type="color" @input=${(e: InputEvent) => {
-							if (e.target) {
-								this.card.bottomLeftLed.write(hexToRgb(e.target.value))
-							}
-						}} />
+						<h1>Lets do awesome things!</h1>
+						Set led color <input
+							type="color"
+							@input=${(e: InputEvent) => {
+								if (e.target) {
+									const c = hexToRgb(e.target.value)
+									this.card.bottomLeftLed.write(c)
+									this.card.bottomRightLed.write(c)
+									this.card.topLeftLed.write(c)
+									this.card.topRightLed.write(c)
+								}
+							}}
+						/>
+						<br/>
+						Set clock <button
+							@click=${() => {
+								this.card.clock.now()
+							}}
+						>
+							now
+						</button>
+						<br/>
+						Vibrate <button
+							@click=${() => {
+								this.card.vibrate(1000)
+							}}
+						>
+							1s
+						</button>
 				  `
 				: html`
 						<button @click=${this.connect}>connect</button>
@@ -44,4 +66,8 @@ class MyApp extends LitElement {
 	clearError() {
 		this.error = ''
 	}
+}
+
+if (supported) {
+	customElements.define('my-app', MyApp)
 }
