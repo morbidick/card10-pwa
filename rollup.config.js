@@ -14,7 +14,7 @@ export default {
 		sourcemap: true,
 	},
 	plugins: [
-		dev && serve(),
+		dev && serve('dist'),
 		resolve(),
 		typescript({
 			objectHashIgnoreUnknownHack: true
