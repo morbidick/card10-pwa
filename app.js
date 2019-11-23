@@ -2543,15 +2543,15 @@ class MyApp extends LitElement {
 						<h1>Lets do awesome things!</h1>
 						Set led color <input
 							type="color"
-							@input=${(e) => {
+							@input=${(e) => __awaiter(this, void 0, void 0, function* () {
                 if (e.target) {
                     const c = hexToRgb(e.target.value);
-                    this.card.bottomLeftLed.write(c);
-                    this.card.bottomRightLed.write(c);
-                    this.card.topLeftLed.write(c);
-                    this.card.topRightLed.write(c);
+                    yield this.card.bottomLeftLed.write(c);
+                    yield this.card.bottomRightLed.write(c);
+                    yield this.card.topLeftLed.write(c);
+                    yield this.card.topRightLed.write(c);
                 }
-            }}
+            })}
 						/>
 						<br/>
 						Set clock <button
