@@ -21,13 +21,13 @@ class MyApp extends LitElement {
 						<h1>Lets do awesome things!</h1>
 						Set led color <input
 							type="color"
-							@input=${(e: InputEvent) => {
+							@input=${async (e: InputEvent) => {
 								if (e.target) {
 									const c = hexToRgb(e.target.value)
-									this.card.bottomLeftLed.write(c)
-									this.card.bottomRightLed.write(c)
-									this.card.topLeftLed.write(c)
-									this.card.topRightLed.write(c)
+									await this.card.bottomLeftLed.write(c)
+									await this.card.bottomRightLed.write(c)
+									await this.card.topLeftLed.write(c)
+									await this.card.topRightLed.write(c)
 								}
 							}}
 						/>
