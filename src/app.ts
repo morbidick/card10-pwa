@@ -19,7 +19,8 @@ class MyApp extends LitElement {
 			${this.card
 				? html`
 						<h1>Lets do awesome things!</h1>
-						Set led color <input
+						Set led color
+						<input
 							type="color"
 							@input=${async (e: InputEvent) => {
 								if (e.target) {
@@ -31,16 +32,18 @@ class MyApp extends LitElement {
 								}
 							}}
 						/>
-						<br/>
-						Set clock <button
+						<br />
+						Set clock
+						<button
 							@click=${() => {
 								this.card.clock.now()
 							}}
 						>
 							now
 						</button>
-						<br/>
-						Vibrate <button
+						<br />
+						Vibrate
+						<button
 							@click=${() => {
 								this.card.vibrate(1000)
 							}}
