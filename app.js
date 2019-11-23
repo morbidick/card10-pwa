@@ -2446,39 +2446,48 @@ const currentTimeAsBigEndian = () => {
     return data;
 };
 
-const rgbCharacteristic = (service, uuid) => ({
-    read: () => __awaiter(void 0, void 0, void 0, function* () {
-        const c = yield service.getCharacteristic(uuid);
-        const data = yield c.readValue();
-        return {
-            red: data.getUint8(0),
-            green: data.getUint8(1),
-            blue: data.getUint8(2),
-        };
-    }),
-    write: ({ red, green, blue }) => __awaiter(void 0, void 0, void 0, function* () {
-        const data = new Uint8Array(3);
-        data[0] = red;
-        data[1] = green;
-        data[2] = blue;
-        const c = yield service.getCharacteristic(uuid);
-        return yield c.writeValue(data);
-    }),
-});
-const numberCharacteristic = (service, uuid) => ({
-    write: (time) => __awaiter(void 0, void 0, void 0, function* () {
-        const data = new Uint16Array(1);
-        data[0] = time;
-        const c = yield service.getCharacteristic(uuid);
-        return yield c.writeValue(data);
-    }),
-});
-const timeCharacteristic = (service, uuid) => ({
-    now: () => __awaiter(void 0, void 0, void 0, function* () {
-        const c = yield service.getCharacteristic(uuid);
-        return yield c.writeValue(currentTimeAsBigEndian());
-    }),
-});
+const rgbCharacteristic = (service, uuid) => {
+    let char;
+    return {
+        read: () => __awaiter(void 0, void 0, void 0, function* () {
+            char = char || (yield service.getCharacteristic(uuid));
+            const data = yield char.readValue();
+            return {
+                red: data.getUint8(0),
+                green: data.getUint8(1),
+                blue: data.getUint8(2),
+            };
+        }),
+        write: ({ red, green, blue }) => __awaiter(void 0, void 0, void 0, function* () {
+            const data = new Uint8Array(3);
+            data[0] = red;
+            data[1] = green;
+            data[2] = blue;
+            char = char || (yield service.getCharacteristic(uuid));
+            return char.writeValue(data);
+        }),
+    };
+};
+const numberCharacteristic = (service, uuid) => {
+    let char;
+    return {
+        write: (time) => __awaiter(void 0, void 0, void 0, function* () {
+            const data = new Uint16Array(1);
+            data[0] = time;
+            char = char || (yield service.getCharacteristic(uuid));
+            return char.writeValue(data);
+        }),
+    };
+};
+const timeCharacteristic = (service, uuid) => {
+    let char;
+    return {
+        now: () => __awaiter(void 0, void 0, void 0, function* () {
+            char = char || (yield service.getCharacteristic(uuid));
+            return char.writeValue(currentTimeAsBigEndian());
+        }),
+    };
+};
 
 const serviceUUID = '42230200-2342-2342-2342-234223422342';
 class Card10 {
@@ -2541,7 +2550,8 @@ class MyApp extends LitElement {
 			${this.card
             ? html `
 						<h1>Lets do awesome things!</h1>
-						Set led color <input
+						Set led color
+						<input
 							type="color"
 							@input=${(e) => __awaiter(this, void 0, void 0, function* () {
                 if (e.target) {
@@ -2553,16 +2563,18 @@ class MyApp extends LitElement {
                 }
             })}
 						/>
-						<br/>
-						Set clock <button
+						<br />
+						Set clock
+						<button
 							@click=${() => {
                 this.card.clock.now();
             }}
 						>
 							now
 						</button>
-						<br/>
-						Vibrate <button
+						<br />
+						Vibrate
+						<button
 							@click=${() => {
                 this.card.vibrate(1000);
             }}
