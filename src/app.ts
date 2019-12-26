@@ -1,6 +1,7 @@
-import { LitElement, html, css, property, customElement } from 'lit-element'
+import { LitElement, html, css, property } from 'lit-element'
 import { connect, Card10, supported } from './bluetooth'
 import { InputEvent, hexToRgb } from './utils'
+import { card10Face } from './face'
 
 class MyApp extends LitElement {
 	@property({ type: String })
@@ -8,6 +9,21 @@ class MyApp extends LitElement {
 
 	@property({ attribute: false })
 	card: Card10
+
+	static get styles() {
+		return css`
+			svg {
+				color: #888;
+				width: 100%;
+			}
+			svg button {
+				width: 100%;
+				height: 100%;
+				font: inherit;
+				font-size: 2em;
+			}
+		`
+	}
 
 	render() {
 		return html`
@@ -51,9 +67,11 @@ class MyApp extends LitElement {
 							1s
 						</button>
 				  `
-				: html`
-						<button @click=${this.connect}>connect</button>
-				  `}
+				: card10Face({
+						screen: html`
+							<button @click=${this.connect}>connect</button>
+						`,
+				  })}
 		`
 	}
 
