@@ -24,11 +24,11 @@ export class Card10 {
 	)
 	topLeftLed = rgbCharacteristic(
 		this.service,
-		'42230213-2342-2342-2342-234223422342'
+		'42230214-2342-2342-2342-234223422342'
 	)
 	topRightLed = rgbCharacteristic(
 		this.service,
-		'42230214-2342-2342-2342-234223422342'
+		'42230213-2342-2342-2342-234223422342'
 	)
 	clock = timeCharacteristic(
 		this.service,
