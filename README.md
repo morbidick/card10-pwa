@@ -2,6 +2,14 @@
 
 Web app to control your card10 badge via bluetooth. Supports setting your time, led colors and activating the vibration motor.
 
+## TODO
+
+* [ ] add UTC set clock button
+* [ ] allow mood selection
+* [ ] get led strip running
+* [ ] implement file protocol
+* [ ] file upload
+* [ ] web ide
 
 ## Development
 
