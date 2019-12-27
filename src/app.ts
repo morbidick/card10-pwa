@@ -24,7 +24,13 @@ class MyApp extends LitElement {
 				width: 100%;
 				height: 100%;
 				font: inherit;
+			}
+			button.connect {
 				font-size: 2em;
+			}
+			.rotate {
+				display: block;
+				transform: rotate(-90deg) translate(-50%);
 			}
 			label.hidden {
 				display: block;
@@ -44,7 +50,9 @@ class MyApp extends LitElement {
 			${!this.card
 				? card10Face({
 						screen: html`
-							<button @click=${this.connect}>connect</button>
+							<button class="connect" @click=${this.connect}>
+								connect
+							</button>
 						`,
 				  })
 				: card10Face({
@@ -116,6 +124,15 @@ class MyApp extends LitElement {
 									}
 								}}
 							/>
+						`,
+						vibrationMotor: html`
+							<button
+								@click=${() => {
+									this.card?.vibrate(1000)
+								}}
+							>
+								<span class="rotate">vibrate</span>
+							</button>
 						`,
 				  })}
 		`

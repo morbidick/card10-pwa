@@ -6,6 +6,7 @@ export const card10Face = ({
 	topRightLed = html``,
 	bottomLeftLed = html``,
 	bottomRightLed = html``,
+	vibrationMotor = html``,
 }) => svg`
 	<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 504 444">
 		<rect width="500" height="400" x="2" y="22" fill="none" stroke="currentColor" stroke-width="2" ry="20"/>
@@ -25,6 +26,9 @@ export const card10Face = ({
 		</foreignobject>
 		<foreignobject class="node" width="40" height="40" x="382" y="402">
 			${bottomRightLed}
+		</foreignobject>
+		<foreignobject class="node" width="40" height="80" x="462" y="280">
+			${vibrationMotor}
 		</foreignobject>
 	</svg>
 `
