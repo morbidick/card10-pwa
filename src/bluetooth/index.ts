@@ -41,7 +41,7 @@ export class Card10 {
 	) */
 }
 
-export async function connect() {
+export async function connect(onDisconnect = () => {}) {
 	console.log('Requesting Bluetooth Device...')
 	const device = await navigator.bluetooth.requestDevice({
 		filters: [{ services: [serviceUUID] }, { namePrefix: 'card10' }],
@@ -49,6 +49,8 @@ export async function connect() {
 	})
 
 	console.log('Connected to:' + device.name)
+
+	device.addEventListener('gattserverdisconnected', onDisconnect)
 
 	console.log('Connecting to GATT Server...')
 	if (!device.gatt) {

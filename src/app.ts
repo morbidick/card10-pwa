@@ -8,7 +8,7 @@ class MyApp extends LitElement {
 	error = ''
 
 	@property({ attribute: false })
-	card: Card10
+	card: Card10 | null
 
 	static get styles() {
 		return css`
@@ -51,7 +51,7 @@ class MyApp extends LitElement {
 						screen: html`
 							<button
 								@click=${() => {
-									this.card.clock.now()
+									this.card?.clock.now()
 								}}
 							>
 								Set current time
@@ -67,7 +67,7 @@ class MyApp extends LitElement {
 								@input=${async (e: InputEvent) => {
 									if (e.target) {
 										const c = hexToRgb(e.target.value)
-										await this.card.topLeftLed.write(c)
+										await this.card?.topLeftLed.write(c)
 									}
 								}}
 							/>
@@ -82,7 +82,7 @@ class MyApp extends LitElement {
 								@input=${async (e: InputEvent) => {
 									if (e.target) {
 										const c = hexToRgb(e.target.value)
-										await this.card.topRightLed.write(c)
+										await this.card?.topRightLed.write(c)
 									}
 								}}
 							/>
@@ -97,7 +97,7 @@ class MyApp extends LitElement {
 								@input=${async (e: InputEvent) => {
 									if (e.target) {
 										const c = hexToRgb(e.target.value)
-										await this.card.bottomLeftLed.write(c)
+										await this.card?.bottomLeftLed.write(c)
 									}
 								}}
 							/>
@@ -112,7 +112,7 @@ class MyApp extends LitElement {
 								@input=${async (e: InputEvent) => {
 									if (e.target) {
 										const c = hexToRgb(e.target.value)
-										await this.card.bottomRightLed.write(c)
+										await this.card?.bottomRightLed.write(c)
 									}
 								}}
 							/>
@@ -124,7 +124,7 @@ class MyApp extends LitElement {
 	async connect() {
 		try {
 			this.clearError()
-			this.card = await connect()
+			this.card = await connect(() => (this.card = null))
 		} catch (e) {
 			this.error = e
 		}
