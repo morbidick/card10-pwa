@@ -7,6 +7,8 @@
     "prettier": "^1.19.1",
     "rollup": "^1.27.14",
     "rollup-plugin-copy": "^3.1.0",
+    "rollup-plugin-index-html": "^1.7.5",
+    "rollup-plugin-minify-html-literals": "^1.2.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-sourcemaps": "^0.4.2",
